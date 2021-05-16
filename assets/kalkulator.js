@@ -14,24 +14,24 @@ let calculator = {
 /**
  *  function updateDisplay = untuk mengupdate angka pada layar
  */
-const updateDisplay = () => {
+function updateDisplay() {
   document.querySelector("#displayNumber").innerHTML = calculator.displayNumber;
-};
+}
 
 /**
  *  function clear Calculator = untuk menghapus data pada kalkulator
  */
-const clearCalculator = () => {
+function clearCalculator() {
   calculator.displayNumber = "0";
   calculator.operator = null;
   calculator.firstNumber = null;
   calculator.waitingForSecondNumber = false;
-};
+}
 
 /**
  *  function inputDigit = untuj memasukan angka ke dalam nilai displayNumber
  */
-const inputDigit = (digit) => {
+function inputDigit(digit) {
   /**
    *  jika displayNumber bernilai 0, maka angka yang pertama dimasukan akan menggantikan keseluruhan nilai displayNumber
    *  jika tidak, maka lakukan seperti biasa (angka yang dimasukan akan muncul setelahnya)
@@ -41,19 +41,19 @@ const inputDigit = (digit) => {
   } else {
     calculator.displayNumber += digit;
   }
-};
+}
 
 /**
  *  bilangan negatif, jika displayNumber bernilai 0 maka tidak terjadi perkalian
  *  jika tidak maka nilai displayNUmber * -1
  */
-const inverseNumber = () => {
+function inverseNumber() {
   if (calculator.displayNumber === "0") {
     return;
   }
 
   calculator.displayNumber = calculator.displayNumber * -1;
-};
+}
 
 /**
  *   Fungsi ini membutuhkan satu argument yang merupakan sebuah operator
@@ -65,7 +65,7 @@ const inverseNumber = () => {
  *   Namun jika waitingForSecondNumber bernilai true. browser akan menampilkan alert()
  */
 
-const handleOperator = (operator) => {
+function handleOperator(operator) {
   if (!calculator.waitingForSecondNumber) {
     calculator.operator = operator;
     calculator.waitingForSecondNumber = true;
@@ -76,7 +76,7 @@ const handleOperator = (operator) => {
   } else {
     alert("Operator sudah ditetapkan");
   }
-};
+}
 
 /**
  *  Fungsi akan melakukan pengecekan nilai - nilai yang dibutuhkan, tapi jika tidak terpenuhi akan distop
@@ -85,7 +85,7 @@ const handleOperator = (operator) => {
  *  parseInt() digunakan untuk mengubah String menjadi number.
  *
  */
-const performCalculation = () => {
+function performCalculation() {
   if (calculator.firstNumber == null || calculator.operator == null) {
     alert("Anda belum menetapkan operator");
     return;
@@ -98,8 +98,18 @@ const performCalculation = () => {
     result = parseInt(calculator.firstNumber) - parseInt(calculator.displayNumber);
   }
 
+  // objek yang akan dikirimkan sebagai argumen fungsi putHistory()
+  const history = {
+    firstNumber: calculator.firstNumber,
+    secondNumber: calculator.displayNumber,
+    operator: calculator.operator,
+    result: result,
+  };
+
+  putHistory(history);
   calculator.displayNumber = result;
-};
+  renderHistory();
+}
 
 /**
  *  Buat variabel buttons dengan menginisialisasikan seluruh elemen button yang ada
